@@ -4,16 +4,72 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
   <div
-    class='py-2 px-6 rounded-md absolute top-0 left-0 right-0 bottom-0 h-fit w-fit m-auto'>
+    class='py-2 px-6 rounded-md absolute top-0 left-0 right-0 bottom-0 h-fit w-fit m-auto z-10'>
     <h1
       class='text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-950 to-blue-600 bg-clip-text text-transparent max-w-3xl text-center'>
       CEVI: Interactive Visualization Centre
     </h1>
   </div>
-  <div class='absolute bottom-10 left-0 w-full grid place-items-center'>
+  <div class='absolute bottom-10 left-0 w-full grid place-items-center z-10'>
     <p
       class='text-black text-sm bg-blue-200 py-1 px-3 rounded-lg shadow-md select-none'>
       © 2025 CEVI research group
     </p>
   </div>
+  <canvas
+    id='three-canvas'
+    class='fixed top-0 left-0 right-0 bottom-0 w-full h-full'></canvas>
+  <script>
+    import * as THREE from "three";
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    const canvas = document.getElementById("three-canvas") as HTMLCanvasElement;
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setClearColor(0x000000, 0); // Fondo transparente
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    camera.position.z = 30;
+
+    const geometry = new THREE.TorusGeometry(12, 2, 16, 40);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x27272a,
+      wireframe: true,
+      opacity: 0.4,
+      transparent: true,
+    });
+    const torus = new THREE.Mesh(geometry, material);
+
+    // Añadir iluminación más intensa
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(20, 20, 20);
+    scene.add(pointLight);
+
+    // Luz ambiental más intensa para iluminar toda la escena
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    scene.add(torus);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      torus.rotation.x += 0.001;
+      torus.rotation.y += 0.001;
+      torus.rotation.z += 0.001;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
 </Layout>
