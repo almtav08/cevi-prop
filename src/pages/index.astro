@@ -1,11 +1,19 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-	<Welcome />
+  <div
+    class='py-2 px-6 rounded-md absolute top-0 left-0 right-0 bottom-0 h-fit w-fit m-auto'>
+    <h1
+      class='text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-950 to-blue-600 bg-clip-text text-transparent max-w-3xl text-center'>
+      CEVI: Interactive Visualization Centre
+    </h1>
+  </div>
+  <div class='absolute bottom-10 left-0 w-full grid place-items-center'>
+    <p
+      class='text-black text-sm bg-blue-200 py-1 px-3 rounded-lg shadow-md select-none'>
+      © 2025 CEVI research group
+    </p>
+  </div>
 </Layout>
