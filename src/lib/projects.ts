@@ -9,18 +9,6 @@ export const FUNDERS = [
 
 export const PROJECTS = [
   {
-    startdate: "01-01-2023",
-    enddate: "31-08-2025",
-    call: "101061424 (HORIZON-CL2-2021-TRANSFORMATIONS-01)",
-    shortname: "e-DIPLOMA",
-    name: "Electronic, Didactive and Innovative PLatform based On Multimedia Assets",
-    grant: 3000000,
-    link: "https://e-diplomaproject.eu/",
-    image: "ediploma.webp",
-    funder: "European Comission",
-    line: "vrar",
-  },
-  {
     startdate: "01-09-2024",
     enddate: "31-08-2028",
     call: "CIPROM-2023-48",
@@ -34,4 +22,30 @@ export const PROJECTS = [
   },
 ];
 
-export const PAST_PROJECTS = [];
+export const PAST_PROJECTS = [
+  {
+    startdate: "01-01-2023",
+    enddate: "31-08-2025",
+    call: "101061424 (HORIZON-CL2-2021-TRANSFORMATIONS-01)",
+    shortname: "e-DIPLOMA",
+    name: "Electronic, Didactive and Innovative PLatform based On Multimedia Assets",
+    grant: 3000000,
+    link: "https://e-diplomaproject.eu/",
+    image: "ediploma.webp",
+    funder: "European Comission",
+    line: "vrar",
+  },
+];
+
+export function getProjectByShortname(shortname: string) {
+  return PROJECTS.find((project) => slugify(project.shortname) === shortname);
+}
+
+export function slugify(str: string) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}

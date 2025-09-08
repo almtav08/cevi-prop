@@ -1,0 +1,106 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import LinkIcon from "../../icons/Link.astro";
+import { slugify } from "../../lib/projects";
+
+export async function getStaticPaths() {
+    const projects = [
+      ...(await import("../../lib/projects")).PROJECTS,
+      ...(await import("../../lib/projects")).PAST_PROJECTS,
+    ];
+  return projects.map((proj) => {
+    return {
+      params: { id: slugify(proj.shortname) },
+      props: { project: proj },
+    };
+  });
+}
+
+interface ProjectShape {
+  startdate: string;
+  enddate: string;
+  call: string;
+  shortname: string;
+  name: string;
+  grant?: number;
+  link?: string;
+  image?: string;
+  funder?: string;
+  line?: string;
+}
+
+const { project } = Astro.props;
+
+function formatDate(dateStr: string) {
+  const [day, month, year] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+const startFormatted = formatDate(project.startdate);
+const endFormatted = formatDate(project.enddate);
+const grantFormatted = project.grant
+  ? new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    })
+      .format(project.grant)
+      .replace("€", "")
+      .trim() + " €"
+  : null;
+---
+
+<Layout>
+  <main class='max-w-5xl mx-auto px-6 py-16'>
+    <a href='/cevi-prop/projects' class='text-sm text-blue-700 hover:underline'
+      >← Back to projects</a
+    >
+    <div class='mt-6 grid md:grid-cols-[320px_1fr] gap-10 items-start'>
+      <div>
+        {
+          project.image && (
+            <img
+              src={`/cevi-prop/projects/${project.image}`}
+              alt={project.name}
+              class='rounded-lg shadow w-full'
+            />
+          )
+        }
+      </div>
+      <div class='space-y-4'>
+        <h1 class='text-3xl font-bold tracking-tight'>
+          {project.shortname}: {project.name}
+        </h1>
+        <p class='text-sm text-zinc-600'>{startFormatted} – {endFormatted}</p>
+        {
+          grantFormatted && (
+            <p class='text-sm font-medium'>Grant: {grantFormatted}</p>
+          )
+        }
+        {
+          project.funder && (
+            <p class='text-sm text-zinc-500'>Funder: {project.funder}</p>
+          )
+        }
+        <div class='flex gap-4 pt-2'>
+          {
+            project.link && (
+              <a
+                href={project.link}
+                target='_blank'
+                rel='noopener noreferrer'
+                class='inline-flex items-center gap-1 text-blue-700 hover:underline'>
+                <LinkIcon class='size-4' /> External link
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>

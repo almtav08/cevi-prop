@@ -1,5 +1,6 @@
 ---
 import Link from "../icons/Link.astro";
+import { slugify } from "../lib/projects";
 
 export interface ProjectCardProps {
   endDate?: string;
@@ -61,11 +62,10 @@ const grantFormatted = grant
   <h2 class='text-base flex-1'>{shortName}: {name}</h2>
   {grant && <h2 class='text-lg'>{grantFormatted}</h2>}
   <a
-    href={link}
-    target='_blank'
+    href={`/cevi-prop/projects/${slugify(shortName)}`}
     rel='noopener noreferrer'
-    class='border border-blue-800 rounded-sm px-4 py-2 hover:bg-blue-200 transition-all duration-300 cursor-pointer text-center flex items-center justify-center gap-2'>
-    <Link class='size-4' />
-    More information
+    class='border border-blue-800 rounded-sm px-4 py-2 hover:bg-blue-100 transition-all duration-300 cursor-pointer text-center flex items-center justify-center gap-2'>
+    <Link class='size-6' />
+    See More
   </a>
 </div>
