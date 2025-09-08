@@ -11,8 +11,7 @@ import "../styles/global.css";
     <meta name='generator' content={Astro.generator} />
     <title>CEVI Research Group</title>
   </head>
-  <body
-    class='bg-zinc-50 text-neutral- w-full h-full m-0 selection:bg-blue-300/70'>
+  <body class='bg-zinc-50 text-neutral- w-full h-full m-0 selection:bg-blue-300/70'>
     <slot />
     <div
       id='back-top'
@@ -34,7 +33,10 @@ import "../styles/global.css";
 </html>
 
 <style>
-
+  html,
+  body {
+    font-family: Inconsolata, monospace;
+  }
 </style>
 
 <script defer>
